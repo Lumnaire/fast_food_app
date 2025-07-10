@@ -2,7 +2,7 @@ import { CreateUserParams, SignInParams } from '@/type';
 import { Account, Avatars, Client, Databases, ID, Query } from 'react-native-appwrite';
 
 export const appwriteConfig = {
-    endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT! || 'https://cloud.appwrite.io/v1',
+    endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
     platfrom: "com.lumnaire.food.app",
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     databaseId: '686d140e00327cab4ff4',
@@ -20,15 +20,12 @@ export const account = new Account(client);
 export const databases = new Databases(client);
 const avatars = new Avatars(client);
 
-export const createUser = async ({email, password, name}:CreateUserParams) => {
+export const createUser = async ({ email, password, name }: CreateUserParams) => {
     try {
-        const newAccount = await account.create(ID.unique(), email, password, name);
+        const newAccount = await account.create(ID.unique(), email, password, name)
+        if(!newAccount) throw Error;
 
-        if (!newAccount) {
-            throw  Error;
-        }
-
-        await signIn({email,password});
+        await signIn({ email, password });
 
         const avatarUrl = avatars.getInitialsURL(name);
 
@@ -38,7 +35,6 @@ export const createUser = async ({email, password, name}:CreateUserParams) => {
             ID.unique(),
             { email, name, accountId: newAccount.$id, avatar: avatarUrl }
         );
-        
     } catch (e) {
         throw new Error(e as string);
     }
@@ -51,6 +47,25 @@ export const signIn = async ({ email, password }: SignInParams) => {
         throw new Error(e as string);
     }
 }
+
+// export const signIn = async ({ email, password }: SignInParams) => {
+//   try {
+//     // Optional: delete existing session if any
+//     try {
+//       await account.deleteSession('current'); // safely delete current session
+//     } catch (e) {
+//       // no-op if session doesn't exist
+//       console.log('No active session to delete before sign-in');
+//     }
+
+//     // Now create a new session
+//     const session = await account.createEmailPasswordSession(email, password);
+//     return session;
+//   } catch (e) {
+//     console.error("Sign-in error:", e);
+//     throw new Error((e as Error).message);
+//   }
+// };
 
 export const getCurrentUser = async () => {
     try {
