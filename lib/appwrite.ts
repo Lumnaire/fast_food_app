@@ -6,7 +6,11 @@ export const appwriteConfig = {
     platfrom: "com.lumnaire.food.app",
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     databaseId: '686d140e00327cab4ff4',
-    userCollectionId: '686d14550038ab05ac02'
+    userCollectionId: '686d14550038ab05ac02',
+    categoriesCollectionId: '687648b9000e934c5bd4',
+    menuCollectionId: '6876494d0036bf323c5e',
+    customizationsCollectionId: '68764a840022a4f935ed',
+    menuCustomizationCollectionId: '68764b4c000d4c4a40e7'
 }
 
 export const client = new Client();
