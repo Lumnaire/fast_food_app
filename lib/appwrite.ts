@@ -1,16 +1,17 @@
 import { CreateUserParams, SignInParams } from '@/type';
-import { Account, Avatars, Client, Databases, ID, Query } from 'react-native-appwrite';
+import { Account, Avatars, Client, Databases, ID, Query, Storage } from 'react-native-appwrite';
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
     platfrom: "com.lumnaire.food.app",
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     databaseId: '686d140e00327cab4ff4',
+    bucketId: '68764c3200190d36fc94',
     userCollectionId: '686d14550038ab05ac02',
     categoriesCollectionId: '687648b9000e934c5bd4',
     menuCollectionId: '6876494d0036bf323c5e',
     customizationsCollectionId: '68764a840022a4f935ed',
-    menuCustomizationCollectionId: '68764b4c000d4c4a40e7'
+    menuCustomizationsCollectionId: '68764b4c000d4c4a40e7'
 }
 
 export const client = new Client();
@@ -22,6 +23,7 @@ client
 
 export const account = new Account(client);
 export const databases = new Databases(client);
+export const storage = new Storage(client);
 const avatars = new Avatars(client);
 
 export const createUser = async ({ email, password, name }: CreateUserParams) => {
